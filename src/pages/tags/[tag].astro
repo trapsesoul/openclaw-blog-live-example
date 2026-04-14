@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
+import { withBase } from '../../lib/urls';
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog');
@@ -18,13 +19,10 @@ export async function getStaticPaths() {
 }
 
 const { tag, posts } = Astro.props;
-const basePath = import.meta.env.BASE_URL.endsWith('/')
-  ? import.meta.env.BASE_URL
-  : `${import.meta.env.BASE_URL}/`;
 ---
 
 <BaseLayout title={`#${tag} - OpenClaw Blog`} description={`Posts tagged with ${tag}.`}>
-  <p><a href={`${basePath}`}>← 回首頁</a></p>
+  <p><a href={withBase('')}>← 回首頁</a></p>
   <h1>#{tag}</h1>
 
   <ul>
@@ -32,7 +30,7 @@ const basePath = import.meta.env.BASE_URL.endsWith('/')
       const slug = post.id.replace(/\.md$/, '');
       return (
         <li>
-          <a href={`${basePath}posts/${slug}/`}>{post.data.title}</a>
+          <a href={withBase(`posts/${slug}/`)}>{post.data.title}</a>
           <div class="meta">{post.data.pubDate.toLocaleDateString('zh-TW')} · {post.data.description}</div>
         </li>
       );
