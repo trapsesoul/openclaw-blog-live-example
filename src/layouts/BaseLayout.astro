@@ -25,7 +25,8 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
       a:hover { text-decoration: underline; }
       .meta { color: #6b7280; font-size: 14px; }
       ul { padding-left: 20px; }
-      img { max-width: 100%; height: auto; display: block; border-radius: 12px; }
+      :global(img) { max-width: 100%; height: auto; display: block; border-radius: 12px; }
+      :global(pre), :global(code) { word-break: break-word; }
       hr { border: none; border-top: 1px solid #e5e7eb; margin: 20px 0; }
     </style>
   </head>
