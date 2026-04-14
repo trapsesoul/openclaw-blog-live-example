@@ -5,6 +5,8 @@ pubDate: 2026-04-15
 tags: ["ai", "career", "x-factor", "execution"]
 ---
 
+![AI 時代的 X Factor 封面圖](./assets/x-factor-ai-era.svg)
+
 最近大家都很焦慮，這很正常。
 有人怕自己學太慢，有人怕自己做太慢，也有人怕工作被 AI 吃掉。
 
