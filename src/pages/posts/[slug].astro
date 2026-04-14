@@ -1,0 +1,22 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog');
+  return posts.map((post) => ({
+    params: { slug: post.id.replace(/\.md$/, '') },
+    props: { post }
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+---
+
+<BaseLayout title={post.data.title}>
+  <p><a href={`${import.meta.env.BASE_URL}`}>← 回首頁</a></p>
+  <h1>{post.data.title}</h1>
+  <p class="meta">{post.data.pubDate.toLocaleDateString('zh-TW')}</p>
+  <Content />
+</BaseLayout>

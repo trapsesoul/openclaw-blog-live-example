@@ -1,21 +1,34 @@
-# blog-live-example
+# openclaw-blog-live-example
 
-最小可用的 GitHub Pages 範例（可直接給 OpenClaw 維護）。
+Astro + GitHub Pages 的最小可用部落格範例（含文章列表與 RSS）。
 
-## 快速上線
+## 已完成
 
-1. 建 repo（建議 `public`，Pages 最穩定）
-2. 把此資料夾內容 push 到 repo `main`
-3. GitHub → Settings → Pages → Source: **GitHub Actions**
-4. 等 workflow `Deploy static site to Pages` 跑完
-5. 站點會出現在：`https://<your-user>.github.io/<repo-name>/`
+- Astro 架構（`src/content/blog/*.md` 發文）
+- 首頁文章列表（`/`）
+- 單篇文章頁（`/posts/<slug>/`）
+- RSS（`/rss.xml`）
+- GitHub Actions 自動部署到 Pages
 
-## 結構
+## 本機開發
 
-- `index.html`：首頁
-- `.github/workflows/pages.yml`：自動部署
+```bash
+npm install
+npm run dev
+```
 
-## 下一步
+## 發文方式
 
-- 改成 Astro/Hugo（保留同樣部署流程）
-- 加文章清單與 RSS
+在 `src/content/blog/` 新增 markdown 檔案：
+
+```md
+---
+title: "你的文章標題"
+description: "一句摘要"
+pubDate: 2026-04-14
+---
+
+內文...
+```
+
+push 到 `main` 後會自動部署。

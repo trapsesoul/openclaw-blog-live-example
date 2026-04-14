@@ -1,0 +1,29 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const posts = (await getCollection('blog')).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+---
+
+<BaseLayout title="OpenClaw Blog Live Example (Astro)">
+  <h1>OpenClaw Blog Live Example (Astro)</h1>
+  <p class="meta">GitHub Pages + Astro + RSS</p>
+
+  <p><a href={`${import.meta.env.BASE_URL}rss.xml`}>訂閱 RSS</a></p>
+  <hr />
+
+  <h2>文章列表</h2>
+  <ul>
+    {posts.map((post) => {
+      const slug = post.id.replace(/\.md$/, '');
+      return (
+        <li>
+          <a href={`${import.meta.env.BASE_URL}posts/${slug}/`}>{post.data.title}</a>
+          <div class="meta">{post.data.pubDate.toLocaleDateString('zh-TW')} · {post.data.description}</div>
+        </li>
+      );
+    })}
+  </ul>
+</BaseLayout>
