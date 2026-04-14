@@ -2,6 +2,7 @@
 title: "Hello from Astro"
 description: "First post in the live example blog"
 pubDate: 2026-04-14
+tags: ["astro", "openclaw", "github-pages"]
 ---
 
 這是 Astro 版本的 live example。

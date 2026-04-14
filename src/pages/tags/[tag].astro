@@ -1,0 +1,38 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog');
+  const tags = [...new Set(posts.flatMap((post) => post.data.tags ?? []))];
+
+  return tags.map((tag) => ({
+    params: { tag: encodeURIComponent(tag) },
+    props: {
+      tag,
+      posts: posts
+        .filter((post) => (post.data.tags ?? []).includes(tag))
+        .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+    }
+  }));
+}
+
+const { tag, posts } = Astro.props;
+---
+
+<BaseLayout title={`#${tag} - OpenClaw Blog`} description={`Posts tagged with ${tag}.`}>
+  <p><a href={`${import.meta.env.BASE_URL}`}>← 回首頁</a></p>
+  <h1>#{tag}</h1>
+
+  <ul>
+    {posts.map((post) => {
+      const slug = post.id.replace(/\.md$/, '');
+      return (
+        <li>
+          <a href={`${import.meta.env.BASE_URL}posts/${slug}/`}>{post.data.title}</a>
+          <div class="meta">{post.data.pubDate.toLocaleDateString('zh-TW')} · {post.data.description}</div>
+        </li>
+      );
+    })}
+  </ul>
+</BaseLayout>

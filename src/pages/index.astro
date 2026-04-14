@@ -5,13 +5,37 @@ import { getCollection } from 'astro:content';
 const posts = (await getCollection('blog')).sort(
   (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
 );
+
+const allTags = [...new Set(posts.flatMap((post) => post.data.tags ?? []))].sort();
 ---
 
-<BaseLayout title="OpenClaw Blog Live Example (Astro)">
+<BaseLayout
+  title="OpenClaw Blog Live Example (Astro)"
+  description="Astro + GitHub Pages blog demo with article list, tags, RSS and sitemap."
+>
   <h1>OpenClaw Blog Live Example (Astro)</h1>
   <p class="meta">GitHub Pages + Astro + RSS</p>
 
-  <p><a href={`${import.meta.env.BASE_URL}rss.xml`}>訂閱 RSS</a></p>
+  <p>
+    <a href={`${import.meta.env.BASE_URL}rss.xml`}>訂閱 RSS</a>
+    {' · '}
+    <a href={`${import.meta.env.BASE_URL}sitemap-index.xml`}>Sitemap</a>
+  </p>
+
+  {allTags.length > 0 && (
+    <>
+      <h2>分類 / Tags</h2>
+      <p>
+        {allTags.map((tag, i) => (
+          <>
+            <a href={`${import.meta.env.BASE_URL}tags/${encodeURIComponent(tag)}/`}>#{tag}</a>
+            {i < allTags.length - 1 ? ' ' : ''}
+          </>
+        ))}
+      </p>
+    </>
+  )}
+
   <hr />
 
   <h2>文章列表</h2>
@@ -22,6 +46,16 @@ const posts = (await getCollection('blog')).sort(
         <li>
           <a href={`${import.meta.env.BASE_URL}posts/${slug}/`}>{post.data.title}</a>
           <div class="meta">{post.data.pubDate.toLocaleDateString('zh-TW')} · {post.data.description}</div>
+          {(post.data.tags?.length ?? 0) > 0 && (
+            <div class="meta">
+              {post.data.tags!.map((tag, i) => (
+                <>
+                  <a href={`${import.meta.env.BASE_URL}tags/${encodeURIComponent(tag)}/`}>#{tag}</a>
+                  {i < post.data.tags!.length - 1 ? ' ' : ''}
+                </>
+              ))}
+            </div>
+          )}
         </li>
       );
     })}
