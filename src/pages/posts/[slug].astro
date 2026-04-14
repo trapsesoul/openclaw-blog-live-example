@@ -12,17 +12,20 @@ export async function getStaticPaths() {
 
 const { post } = Astro.props;
 const { Content } = await render(post);
+const basePath = import.meta.env.BASE_URL.endsWith('/')
+  ? import.meta.env.BASE_URL
+  : `${import.meta.env.BASE_URL}/`;
 ---
 
 <BaseLayout title={post.data.title} description={post.data.description}>
-  <p><a href={`${import.meta.env.BASE_URL}`}>← 回首頁</a></p>
+  <p><a href={`${basePath}`}>← 回首頁</a></p>
   <h1>{post.data.title}</h1>
   <p class="meta">{post.data.pubDate.toLocaleDateString('zh-TW')}</p>
   {(post.data.tags?.length ?? 0) > 0 && (
     <p class="meta">
       {post.data.tags!.map((tag, i) => (
         <>
-          <a href={`${import.meta.env.BASE_URL}tags/${encodeURIComponent(tag)}/`}>#{tag}</a>
+          <a href={`${basePath}tags/${encodeURIComponent(tag)}/`}>#{tag}</a>
           {i < post.data.tags!.length - 1 ? ' ' : ''}
         </>
       ))}
